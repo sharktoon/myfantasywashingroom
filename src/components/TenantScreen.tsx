@@ -36,9 +36,20 @@ function TenantDisplay(props: TenantDisplayProps) {
             <Text>{props.tenant.name}</Text>
             <View style={{width: Math.min(200, props.tenant.dirt * 20), height: 3, backgroundColor: "#a0522d"}}/>
             <View style={{width: Math.min(200, props.tenant.happiness), height: 3, backgroundColor: "#20b2aa"}}/>
-            {props.tenant.machineId && <Text>using {props.tenant.machineId}</Text>}
+            {renderAction()}
         </View>
     </View>;
+
+    function renderAction() {
+        if (props.tenant.machineId) {
+            return <Text>uses {props.tenant.machineId}</Text>
+        } else if (props.tenant.dirt >= props.tenant.dirtTicketLimit * 0.9) {
+            return <Text>angry</Text>
+        } else if (props.tenant.dirt >= props.tenant.dirtHappinessLimit * 0.9) {
+            return <Text>looks for...</Text>
+        }
+        return null;
+    }
 }
 
 export default TenantScreen;

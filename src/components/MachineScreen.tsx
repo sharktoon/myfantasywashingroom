@@ -11,10 +11,23 @@ function MachineScreen() {
 
     return (
         <View>
+            <FinanceView/>
+            <TicketCountView/>
             {machines.map((m: Machine) => <MachineDisplay key={m.id} machine={m}/>)}
         </View>
     );
 
+}
+
+function FinanceView() {
+    const finance = useSelector((state:RootState) => state.financeState.money);
+    return <Text>{finance.toFixed(2)}</Text>
+}
+
+function TicketCountView() {
+    const ticketCount = useSelector((state:RootState) => state.ticketState.tickets.length);
+
+    return <Text>Tickets: {ticketCount}</Text>
 }
 
 type MachineDisplayProps = {
