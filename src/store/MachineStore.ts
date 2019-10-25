@@ -16,8 +16,20 @@ export type MachineState = {
     machines: Machine[]
 }
 
+const w1: Machine = {
+    cycles: 0,
+    failureRiskBase: 0,
+    failureRiskIncrease: 0.001,
+    id: "W1",
+    inUse: false,
+    remainingTime: 0,
+    speed: 1,
+    type: "wash",
+    willFail: false
+};
+
 const initialState: MachineState = {
-    machines: []
+    machines: [w1]
 };
 
  type MachineActivation = {
@@ -36,7 +48,7 @@ const machineStore = createSlice({
                 machine.inUse = true;
                 ++machine.cycles;
                 machine.remainingTime = action.payload.duration;
-                machine.willFail = Math.random() > machine.failureRiskBase + machine.failureRiskIncrease * machine.cycles;
+                machine.willFail = Math.random() < machine.failureRiskBase + machine.failureRiskIncrease * machine.cycles;
             }
         },
         deactivateMachine(state, action: PayloadAction<string>) {

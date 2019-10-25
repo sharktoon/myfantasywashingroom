@@ -4,6 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import MachineScreen from "./src/components/MachineScreen";
 import store, {AppDispatch} from "./src/store/Store";
 import gameTick from "./src/store/GameTick";
+import TenantScreen from "./src/components/TenantScreen";
 
 let gameRunning = true;
 
@@ -17,8 +18,10 @@ export default function App() {
     return (
         <Provider store={store}>
             <View style={styles.container}>
-                <Text>Open up App.tsx to start working on your app!</Text>
                 <MachineScreen/>
+                <Text>Open up App.tsx to start working on your app!</Text>
+
+                <TenantScreen/>
             </View>
         </Provider>
     );

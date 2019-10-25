@@ -1,13 +1,12 @@
 import {AppThunk} from "./Store";
 import tenantStore from "./TenantStore";
-import machineStore from "./MachineStore";
+import machineStore, {Machine} from "./MachineStore";
+import ticketStore from "./TicketStore";
 
 export default function gameTick(): AppThunk {
     return (dispatch, getState) => {
         const dt = 0.016;
         const state = getState();
-
-        console.log('t');
 
         dispatch(machineStore.actions.tickMachine(dt));
         dispatch(tenantStore.actions.tickTenant(dt));
@@ -24,13 +23,22 @@ export default function gameTick(): AppThunk {
 
         state.tenantState.tenants.forEach(tenant => {
             if (tenant.machineId) {
-                const machine = doneMachines.find(machine => machine.id === tenant.machineId);
+                const machine: Machine = doneMachines.find(machine => machine.id === tenant.machineId);
                 if (machine) {
                     dispatch(tenantStore.actions.releaseMachine({tenantId: tenant.id, machineId: machine.id}));
+                    if (machine.willFail) {
+                        dispatch(tenantStore.actions.resetHappiness(tenant.id));
+                        dispatch(tenantStore.actions.reduceDirt(tenant.id));
+                        dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Laundry is not clean!"}));
+                    } else {
+                        dispatch(tenantStore.actions.resetDirt(tenant.id));
+                    }
+
                     dispatch(machineStore.actions.deactivateMachine(machine.id));
                 }
             } else if (tenant.dirt > tenant.dirtTicketLimit) {
                 dispatch(tenantStore.actions.resetDirt(tenant.id));
+                dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Couldn't find machine."}));
             } else if (tenant.dirt > tenant.dirtHappinessLimit) {
                 if (freeMachines.length > 0) {
                     const index = Math.floor(freeMachines.length * Math.random());
