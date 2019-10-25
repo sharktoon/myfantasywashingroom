@@ -1,31 +1,51 @@
 import React from "react";
-import {Text, View} from 'native-base';
-import {Machine, MachineState} from "../store/MachineStore";
-import {useSelector} from "react-redux";
+import {Button, Text, View} from 'native-base';
+import machineStore, {
+    buyCheapMachine,
+    buyGoodMachine,
+    buyNormalMachine,
+    Machine,
+    MachineState
+} from "../store/MachineStore";
+import {useSelector, useDispatch} from "react-redux";
 import {RootState} from "../store/RootReducer";
 
 
 function MachineScreen() {
 
+    const dispatch = useDispatch();
     const machines: Machine[] = useSelector((state: RootState) => state.machineState.machines);
 
     return (
-        <View>
-            <FinanceView/>
-            <TicketCountView/>
-            {machines.map((m: Machine) => <MachineDisplay key={m.id} machine={m}/>)}
+        <View style={{flexDirection: "column", justifyContent: 'space-between'}}>
+            <View>
+                {machines.map((m: Machine) => <MachineDisplay key={m.id} machine={m}/>)}
+            </View>
+            <View>
+                <FinanceView/>
+                <TicketCountView/>
+                <Button onPress={() => dispatch(buyCheapMachine())}>
+                    <Text>Buy cheap machine (50.00)</Text>
+                </Button>
+                <Button onPress={() => dispatch(buyNormalMachine())}>
+                    <Text>Buy solid machine (100.00)</Text>
+                </Button>
+                <Button onPress={() => dispatch(buyGoodMachine())}>
+                    <Text>Buy expensive machine (200.00)</Text>
+                </Button>
+            </View>
         </View>
     );
 
 }
 
 function FinanceView() {
-    const finance = useSelector((state:RootState) => state.financeState.money);
+    const finance = useSelector((state: RootState) => state.financeState.money);
     return <Text>{finance.toFixed(2)}</Text>
 }
 
 function TicketCountView() {
-    const ticketCount = useSelector((state:RootState) => state.ticketState.tickets.length);
+    const ticketCount = useSelector((state: RootState) => state.ticketState.tickets.length);
 
     return <Text>Tickets: {ticketCount}</Text>
 }

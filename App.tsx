@@ -1,31 +1,82 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import MachineScreen from "./src/components/MachineScreen";
 import store, {AppDispatch} from "./src/store/Store";
 import gameTick from "./src/store/GameTick";
 import TenantScreen from "./src/components/TenantScreen";
+import {Button, Container, Content, Footer, FooterTab, Header, Icon} from "native-base";
+import {AppLoading} from "expo";
+import * as Font from "expo-font";
+
+enum ScreenChoice {
+    machine,
+    tenant,
+    others,
+}
 
 let gameRunning = true;
 
 export default function App() {
+    const [ready, setReady] = useState(false);
+    const [screenChoice, setScreenChoice] = useState(ScreenChoice.machine);
 
     useEffect(() => {
-        GameLoop(store.dispatch);
-        return () => gameRunning = false;
-    }, [false]);
+        if (ready) {
+            GameLoop(store.dispatch);
+            return () => gameRunning = false;
+        }
+    }, [ready]);
+
+
+    async function loadFonts() {
+        await Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+        });
+        setReady(true);
+    }
+
+    useEffect(() => {
+        loadFonts().then(console.log, console.error);
+    }, []);
+
+    if (!ready) {
+        return <AppLoading/>;
+    }
 
     return (
         <Provider store={store}>
-            <View style={styles.container}>
-                <MachineScreen/>
-                <Text>Open up App.tsx to start working on your app!</Text>
+            <Container>
+                <Header>
 
-                <TenantScreen/>
-            </View>
+                </Header>
+                <Content>
+                    {screenChoice === ScreenChoice.machine && <MachineScreen/>}
+                    {screenChoice === ScreenChoice.tenant && <TenantScreen/>}
+                </Content>
+                {MyFooter()}
+            </Container>
         </Provider>
     );
+
+    function MyFooter() {
+        return <Footer>
+            <FooterTab>
+                <Button onPress={() => setScreenChoice(ScreenChoice.machine)}>
+                    <Icon name={"partly-sunny"}/>
+                </Button>
+                <Button onPress={() => setScreenChoice(ScreenChoice.tenant)}>
+                    <Icon name={"beer"}/>
+                </Button>
+                <Button onPress={() => setScreenChoice(ScreenChoice.others)}>
+                    <Icon name={"cog"}/>
+                </Button>
+            </FooterTab>
+        </Footer>
+    }
 }
+
 
 function GameLoop(dispatch: AppDispatch) {
     requestAnimationFrame(loop);

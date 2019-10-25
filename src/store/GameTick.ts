@@ -8,7 +8,7 @@ const PRICE = 2.00;
 
 export default function gameTick(): AppThunk {
     return (dispatch, getState) => {
-        const dt = 0.016;
+        const dt = 0.1;
         const state = getState();
 
         dispatch(machineStore.actions.tickMachine(dt));
@@ -41,6 +41,7 @@ export default function gameTick(): AppThunk {
                 }
             } else if (tenant.dirt > tenant.dirtTicketLimit) {
                 dispatch(tenantStore.actions.resetDirt(tenant.id));
+                dispatch(tenantStore.actions.resetHappiness(tenant.id));
                 dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Couldn't find machine."}));
             } else if (tenant.dirt > tenant.dirtHappinessLimit) {
                 if (freeMachines.length > 0) {

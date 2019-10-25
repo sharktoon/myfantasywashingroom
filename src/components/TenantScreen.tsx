@@ -1,20 +1,31 @@
 import React from "react";
-import {View, Text, Thumbnail, ProgressBar} from "native-base";
-import {useSelector} from 'react-redux';
+import {Button, Text, Thumbnail, View} from "native-base";
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from "../store/RootReducer";
-import {Tenant} from "../store/TenantStore";
-import {ActivityIndicator, StyleSheet} from "react-native";
-import {supportsOrientationLockAsync} from "expo/build/ScreenOrientation/ScreenOrientation";
+import tenantStore, {Tenant} from "../store/TenantStore";
+import {StyleSheet} from "react-native";
 
 require("../../assets/characters/Tex_AnimeAva_01.png");
 require("../../assets/characters/Tex_AnimeAva_02.png");
 
+const TenantScreenStyles = StyleSheet.create({
+    screen: {justifyContent: "space-between"}
+});
+
 function TenantScreen() {
     const tenants = useSelector((state: RootState) => state.tenantState.tenants);
+    const dispatch = useDispatch();
 
     return (
-        <View>
-            {tenants.map(t => <TenantDisplay tenant={t} key={t.id}/>)}
+        <View style={TenantScreenStyles.screen}>
+            <View>
+                {tenants.map(t => <TenantDisplay tenant={t} key={t.id}/>)}
+            </View>
+            <View>
+                <Button onPress={() => dispatch(tenantStore.actions.getRandomTenant())}>
+                    <Text>New tenant</Text>
+                </Button>
+            </View>
         </View>
     );
 }
