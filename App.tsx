@@ -1,19 +1,44 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useEffect} from 'react';
+import {Provider} from 'react-redux';
+import {StyleSheet, Text, View} from 'react-native';
+import MachineScreen from "./src/components/MachineScreen";
+import store, {AppDispatch} from "./src/store/Store";
+import gameTick from "./src/store/GameTick";
+
+let gameRunning = true;
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
+
+    useEffect(() => {
+        GameLoop(store.dispatch);
+        return () => gameRunning = false;
+    }, [false]);
+
+    return (
+        <Provider store={store}>
+            <View style={styles.container}>
+                <Text>Open up App.tsx to start working on your app!</Text>
+                <MachineScreen/>
+            </View>
+        </Provider>
+    );
+}
+
+function GameLoop(dispatch: AppDispatch) {
+    requestAnimationFrame(loop);
+
+    function loop() {
+        if (!gameRunning) return;
+        dispatch(gameTick());
+        requestAnimationFrame(loop);
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
