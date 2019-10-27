@@ -6,7 +6,7 @@ type FinanceState = {
 }
 
 const initialState: FinanceState ={
-    money: 0
+    money: 100
 };
 
 const financeStore = createSlice({

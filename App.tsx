@@ -8,6 +8,7 @@ import TenantScreen from "./src/components/TenantScreen";
 import {Button, Container, Content, Footer, FooterTab, Header, Icon} from "native-base";
 import {AppLoading} from "expo";
 import * as Font from "expo-font";
+import ScoreScreen from "./src/components/ScoreScreen";
 
 enum ScreenChoice {
     machine,
@@ -54,6 +55,7 @@ export default function App() {
                 <Content>
                     {screenChoice === ScreenChoice.machine && <MachineScreen/>}
                     {screenChoice === ScreenChoice.tenant && <TenantScreen/>}
+                    {screenChoice === ScreenChoice.others && <ScoreScreen/>}
                 </Content>
                 {MyFooter()}
             </Container>

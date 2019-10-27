@@ -1,5 +1,9 @@
 import {createSlice, PayloadAction} from "redux-starter-kit";
 
+export const HAPPINESS_MAX = 5;
+const HAPPINESS_RECOVERY = 0.01;
+const HAPPINESS_START = 3;
+
 export type Tenant = {
     id: string
     name: string
@@ -31,7 +35,7 @@ const tenant01: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "01",
     machineId: undefined,
     name: "Lena",
@@ -45,7 +49,7 @@ const tenant02: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "02",
     machineId: undefined,
     name: "Julia",
@@ -59,7 +63,7 @@ const tenant03: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "03",
     machineId: undefined,
     name: "Regina",
@@ -72,7 +76,7 @@ const tenant04: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "04",
     machineId: undefined,
     name: "Lucy",
@@ -85,7 +89,7 @@ const tenant05: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "05",
     machineId: undefined,
     name: "Susanne",
@@ -98,7 +102,7 @@ const tenant06: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "06",
     machineId: undefined,
     name: "Harry",
@@ -111,7 +115,7 @@ const tenant07: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "07",
     machineId: undefined,
     name: "Arsatius",
@@ -124,7 +128,7 @@ const tenant08: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "08",
     machineId: undefined,
     name: "Achim",
@@ -137,7 +141,7 @@ const tenant09: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "09",
     machineId: undefined,
     name: "Freddie",
@@ -150,7 +154,7 @@ const tenant10: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "10",
     machineId: undefined,
     name: "Cora",
@@ -163,7 +167,7 @@ const tenant11: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "11",
     machineId: undefined,
     name: "Florinda",
@@ -176,7 +180,7 @@ const tenant12: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "12",
     machineId: undefined,
     name: "Marie",
@@ -190,7 +194,7 @@ const tenant13: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "13",
     machineId: undefined,
     name: "Pauline",
@@ -203,7 +207,7 @@ const tenant14: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "14",
     machineId: undefined,
     name: "Miriam",
@@ -216,7 +220,7 @@ const tenant15: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "15",
     machineId: undefined,
     name: "Mellie",
@@ -229,7 +233,7 @@ const tenant16: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "16",
     machineId: undefined,
     name: "Fritz",
@@ -242,7 +246,7 @@ const tenant17: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "17",
     machineId: undefined,
     name: "Rob",
@@ -255,7 +259,7 @@ const tenant18: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "18",
     machineId: undefined,
     name: "Zoë",
@@ -268,7 +272,7 @@ const tenant19: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "19",
     machineId: undefined,
     name: "Stefanie",
@@ -281,7 +285,7 @@ const tenant20: Tenant = {
     dirtTicketLimit: 10,
     dryChoiceBase: 0,
     dryChoiceRange: 0,
-    happiness: 0,
+    happiness: HAPPINESS_START,
     id: "20",
     machineId: undefined,
     name: "Hubert",
@@ -341,11 +345,11 @@ const tenantStore = createSlice({
                 tenant => tenant.dirt = 0
             );
         },
-        resetHappiness(state, action: PayloadAction<string>) {
+        reduceHappiness(state, action: PayloadAction<string>) {
             actOnTenant(
                 state,
                 action.payload,
-                tenant => tenant.happiness = 0
+                tenant => tenant.happiness = Math.max(0, Math.floor(tenant.happiness - 1))
             );
         },
         reduceDirt(state, action: PayloadAction<string>) {
@@ -372,8 +376,8 @@ function tickTenant(state: TenantState, action: PayloadAction<number>) {
     state.tenants.forEach(tenant => {
         if (tenant.machineId) return;
         tenant.dirt += tenant.dirtIncrease * dt;
-        if (tenant.dirt < tenant.dirtHappinessLimit) {
-            tenant.happiness += dt;
+        if (tenant.dirt < tenant.dirtHappinessLimit && tenant.happiness < HAPPINESS_MAX) {
+            tenant.happiness += HAPPINESS_RECOVERY * dt;
         }
     });
 }

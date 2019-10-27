@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Text, View} from 'native-base';
+import {Button, List, ListItem, Text, View} from 'native-base';
 import machineStore, {
     buyCheapMachine,
     buyGoodMachine,
@@ -18,9 +18,9 @@ function MachineScreen() {
 
     return (
         <View style={{flexDirection: "column", justifyContent: 'space-between'}}>
-            <View>
-                {machines.map((m: Machine) => <MachineDisplay key={m.id} machine={m}/>)}
-            </View>
+            <List>
+                {machines.map((m: Machine) => <ListItem key={m.id}><MachineDisplay key={m.id} machine={m}/></ListItem>)}
+            </List>
             <View>
                 <FinanceView/>
                 <TicketCountView/>

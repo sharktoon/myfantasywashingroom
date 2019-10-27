@@ -3,13 +3,22 @@ import tenantStore from "./TenantStore";
 import machineStore, {Machine} from "./MachineStore";
 import ticketStore from "./TicketStore";
 import financeStore from "./FinanceStore";
+import scoreStore, {MONTH_TIME} from "./ScoreStore";
 
 const PRICE = 2.00;
 
 export default function gameTick(): AppThunk {
     return (dispatch, getState) => {
         const dt = 0.1;
+        dispatch(scoreStore.actions.timeStep(dt));
+
         const state = getState();
+
+        if (state.scoreState.monthTimer >= MONTH_TIME) {
+            const tenantHappiness = [0, 0, 0, 0, 0, 0];
+            state.tenantState.tenants.forEach(tenant => ++tenantHappiness[Math.floor(tenant.happiness)]);
+            dispatch(scoreStore.actions.score(tenantHappiness));
+        }
 
         dispatch(machineStore.actions.tickMachine(dt));
         dispatch(tenantStore.actions.tickTenant(dt));
@@ -30,7 +39,7 @@ export default function gameTick(): AppThunk {
                 if (machine) {
                     dispatch(tenantStore.actions.releaseMachine({tenantId: tenant.id, machineId: machine.id}));
                     if (machine.willFail) {
-                        dispatch(tenantStore.actions.resetHappiness(tenant.id));
+                        dispatch(tenantStore.actions.reduceHappiness(tenant.id));
                         dispatch(tenantStore.actions.reduceDirt(tenant.id));
                         dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Laundry is not clean!"}));
                     } else {
@@ -41,7 +50,7 @@ export default function gameTick(): AppThunk {
                 }
             } else if (tenant.dirt > tenant.dirtTicketLimit) {
                 dispatch(tenantStore.actions.resetDirt(tenant.id));
-                dispatch(tenantStore.actions.resetHappiness(tenant.id));
+                dispatch(tenantStore.actions.reduceHappiness(tenant.id));
                 dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Couldn't find machine."}));
             } else if (tenant.dirt > tenant.dirtHappinessLimit) {
                 if (freeMachines.length > 0) {
