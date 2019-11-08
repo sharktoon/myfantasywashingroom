@@ -13,6 +13,7 @@ export type Machine = {
     remainingTime: number
     willFail: boolean
     price: number
+    ticketCount: number
 };
 
 export type MachineState = {
@@ -30,6 +31,7 @@ const machineCheap: Machine = {
     type: "wash",
     willFail: false,
     price: 50,
+    ticketCount: 0,
 };
 
 const machineNormal: Machine = {
@@ -43,6 +45,7 @@ const machineNormal: Machine = {
     type: "wash",
     willFail: false,
     price: 100,
+    ticketCount: 0,
 };
 
 const machineGood: Machine = {
@@ -56,6 +59,7 @@ const machineGood: Machine = {
     type: "wash",
     willFail: false,
     price: 200,
+    ticketCount: 0,
 };
 
 const w1: Machine = {
@@ -69,6 +73,7 @@ const w1: Machine = {
     type: "wash",
     willFail: false,
     price: 1000,
+    ticketCount: 0,
 };
 
 const initialState: MachineState = {
@@ -97,6 +102,9 @@ const machineStore = createSlice({
         deactivateMachine(state, action: PayloadAction<string>) {
             const machine = state.machines.find(m => m.id === action.payload);
             if (machine) {
+                if (machine.willFail) {
+                    ++machine.ticketCount;
+                }
                 machine.inUse = false;
             }
         },
@@ -144,10 +152,10 @@ export function buyCheapMachine():AppThunk {
     return buyMachine(machineCheap);
 }
 export function buyNormalMachine():AppThunk {
-    return buyMachine(machineCheap);
+    return buyMachine(machineNormal);
 }
 export function buyGoodMachine():AppThunk {
-    return buyMachine(machineCheap);
+    return buyMachine(machineGood);
 }
 
 function buyMachine(blueprint: Machine): AppThunk {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, List, ListItem, Text, View} from 'native-base';
+import {Button, Icon, List, ListItem, Text, View} from 'native-base';
 import machineStore, {
     buyCheapMachine,
     buyGoodMachine,
@@ -55,9 +55,15 @@ type MachineDisplayProps = {
 }
 
 function MachineDisplay(props: MachineDisplayProps) {
-    return <View>
-        <Text>{props.machine.type}-{props.machine.id}</Text>
-        <Text>{props.machine.inUse ? "running" : "idle"}</Text>
+    return <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{flex: -1, flexDirection: 'column', minWidth: 0, minHeight: 0}}>
+            <Icon style={{flex: 1}} name={'washing-machine'} type={'MaterialCommunityIcons'}/>
+        </View>
+        <View style={{flex: 3, flexDirection: 'column'}}>
+            <Text>{props.machine.type}-{props.machine.id}</Text>
+            <Text>{props.machine.inUse ? "running" : "idle"}</Text>
+            <Text>Tickets: {props.machine.ticketCount}</Text>
+        </View>
     </View>
 }
 

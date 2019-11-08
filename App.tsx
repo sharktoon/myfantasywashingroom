@@ -5,7 +5,7 @@ import MachineScreen from "./src/components/MachineScreen";
 import store, {AppDispatch} from "./src/store/Store";
 import gameTick from "./src/store/GameTick";
 import TenantScreen from "./src/components/TenantScreen";
-import {Button, Container, Content, Footer, FooterTab, Header, Icon} from "native-base";
+import {Button, Container, Content, Footer, FooterTab, Header, Icon, View} from "native-base";
 import {AppLoading} from "expo";
 import * as Font from "expo-font";
 import ScoreScreen from "./src/components/ScoreScreen";

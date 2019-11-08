@@ -4,14 +4,19 @@ type Ticket = {
     id?: number
     tenantId: string
     reason: string
+    machineId?: string
 }
 
-type TicketState = {
+export type TicketState = {
     tickets: Ticket[]
+    oldTickets: Ticket[]
+    totalTicketCount: number
 }
 
 const initialState: TicketState = {
-    tickets: []
+    tickets: [],
+    oldTickets: [],
+    totalTicketCount: 0,
 };
 
 const ticketStore = createSlice({
@@ -22,6 +27,11 @@ const ticketStore = createSlice({
             const ticket = action.payload;
             ticket.id = state.tickets.length;
             state.tickets.push(ticket);
+            ++state.totalTicketCount;
+        },
+        storeTickets(state) {
+            state.oldTickets = state.tickets;
+            state.tickets = []
         },
     }
 });

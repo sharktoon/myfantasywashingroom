@@ -17,7 +17,8 @@ export default function gameTick(): AppThunk {
         if (state.scoreState.monthTimer >= MONTH_TIME) {
             const tenantHappiness = [0, 0, 0, 0, 0, 0];
             state.tenantState.tenants.forEach(tenant => ++tenantHappiness[Math.floor(tenant.happiness)]);
-            dispatch(scoreStore.actions.score(tenantHappiness));
+            dispatch(scoreStore.actions.score({tenants: tenantHappiness, tickets: state.ticketState.tickets.length}));
+            dispatch(ticketStore.actions.storeTickets());
         }
 
         dispatch(machineStore.actions.tickMachine(dt));
@@ -41,7 +42,11 @@ export default function gameTick(): AppThunk {
                     if (machine.willFail) {
                         dispatch(tenantStore.actions.reduceHappiness(tenant.id));
                         dispatch(tenantStore.actions.reduceDirt(tenant.id));
-                        dispatch(ticketStore.actions.addTicket({tenantId: tenant.id, reason: "Laundry is not clean!"}));
+                        dispatch(ticketStore.actions.addTicket({
+                            tenantId: tenant.id,
+                            reason: "Laundry is not clean!",
+                            machineId: machine.id
+                        }));
                     } else {
                         dispatch(tenantStore.actions.resetDirt(tenant.id));
                     }
